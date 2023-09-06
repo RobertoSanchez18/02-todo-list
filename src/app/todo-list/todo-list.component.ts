@@ -6,6 +6,13 @@ import { Component } from '@angular/core';
   styleUrls: ['./todo-list.component.css']
 })
 export class TodoListComponent {
+
+mostrarMensaje: boolean = false;
+
+terminoBusqueda: string = '';
+
+filteredTasks: any[] = [];
+
 editableId: number | null = null;
 
 newTask: string = '';
@@ -13,15 +20,15 @@ newTask: string = '';
   tasks: any[] = [
     {
       title: 'Crear la lista de tareas',
-      completed: true,
+      completed: false,
     },
     {
       title: 'Realizar la estructura html',
-      completed: true,
+      completed: false,
     },
     {
       title: 'Desplegar el proyecto en la web',
-      completed: true,
+      completed: false,
     }
   ];
 
@@ -55,6 +62,18 @@ newTask: string = '';
   stopEdit(task: any, title: string): void {
     this.editableId = null;
     this.updateTask(task, title)
+  }
+
+  ngOnInit(): void {
+    this.filteredTasks = this.tasks;
+  }
+
+  filterTasks(termino: string) {
+    this.filteredTasks = this.tasks.filter(task =>
+      task.title.toLowerCase().includes(termino.toLowerCase()));
+
+      this.mostrarMensaje = this.filteredTasks.length === 0;
+
   }
 
 

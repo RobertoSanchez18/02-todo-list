@@ -7,21 +7,27 @@
         </p>
         <p class="text-muted pb-2">04/01/2020 • AS221 - TEI</p>
 
+        <!-- Input Text Search Tasks -->
+        <div class="input-group mb-4 w-50">
+            <input type="text" class="form-control" placeholder="Buscar Tarea" [(ngModel)]="terminoBusqueda"
+                (input)="filterTasks(terminoBusqueda)">
+        </div>
+
         <!-- Input text -->
-        <div class="input-group mb-4">
-            <input type="text" class="form-control" placeholder="Agregar tarea" aria-label="Agregar tarea"
+        <div class=" input-group mb-4">
+            <input required type=" text" class="form-control" placeholder="Agregar tarea" aria-label="Agregar tarea"
                 aria-describedby="btn-add-task" [(ngModel)]="newTask">
             <button class="btn btn-primary" type="button" id="btn-add-task" (click)="addTask()">Agregar</button>
         </div>
 
         <!-- Task list -->
+        <hr>
         <ul class="list-group mb-0" *ngIf="tasks && tasks.length > 0; else notDataTpl">
-            <li *ngFor="let task of tasks; let i = index"
+            <li *ngFor="let task of filteredTasks; let i = index"
                 class="list-group-item d-flex justify-content-between align-items-center border-0 mb-2 rounded"
                 style="background-color: #f4f6f7;">
                 <div>
                     <input class="form-check-input me-2" type="checkbox" [(ngModel)]="task.completed">
-                    <!-- <span [ngClass]="{'text-decoration-line-through': task.completed}">{{task.title}}</span> -->
                     <span *ngIf="editableId !== i; else editableCell"
                         [ngClass]="{'text-decoration-line-through': task.completed}" (dblclick)="startEdit(i)">
                         {{ task.title }}
@@ -40,6 +46,8 @@
                 </div>
             </li>
         </ul>
+
+        <div *ngIf="mostrarMensaje">No se encontraron resultados</div>
 
         <ng-template #notDataTpl>
             <div class="d-flex flex-column align-items-center">
